@@ -1,0 +1,90 @@
+# Bioinformatics + Process Development Project Templates
+
+# Project 1: Simulated Viral Vector Purification Model
+# File: simulate_process.py
+import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt
+import seaborn as sns
+
+# Simulate mock process data
+def simulate_purification_runs(n_runs=10):
+    np.random.seed(42)
+    data = {
+        'Run': np.arange(1, n_runs + 1),
+        'Filter Pressure (psi)': np.random.normal(10, 2, n_runs),
+        'Yield (%)': np.random.normal(80, 5, n_runs),
+        'DNA Impurity (ng/mL)': np.random.normal(150, 30, n_runs),
+        'Protein Impurity (ng/mL)': np.random.normal(100, 20, n_runs)
+    }
+    df = pd.DataFrame(data)
+    df.to_csv("data/simulated_run_data.csv", index=False)
+    return df
+
+# Generate and plot
+df = simulate_purification_runs()
+sns.pairplot(df.drop("Run", axis=1))
+plt.tight_layout()
+plt.savefig("figures/yield_vs_impurity.png")
+
+
+# Project 2: NGS Read Mapping & Variant Calling Pipeline
+# File: align.sh
+
+"""
+#!/bin/bash
+
+# Paths to tools
+BWA=bwa
+SAMTOOLS=samtools
+BCFTOOLS=bcftools
+
+# Input
+REF=ref_genome.fa
+READS=sample.fastq.gz
+
+# Output
+OUTPUT=sample
+
+# Alignment
+$BWA index $REF
+$BWA mem $REF $READS | $SAMTOOLS view -Sb - > $OUTPUT.bam
+$SAMTOOLS sort $OUTPUT.bam -o $OUTPUT.sorted.bam
+$SAMTOOLS index $OUTPUT.sorted.bam
+
+# Variant calling
+$BCFTOOLS mpileup -f $REF $OUTPUT.sorted.bam | $BCFTOOLS call -mv -Ov -o $OUTPUT.vcf
+"""
+
+
+# Project 3: Omics Data Visualization Dashboard
+# File: dashboard_visualization.ipynb
+# (This is a placeholder for a Jupyter notebook structure. Create this in Jupyter Notebook or JupyterLab)
+
+"""
+Notebook sections:
+1. Load gene expression data (CSV)
+2. Normalize or filter data
+3. Perform PCA (sklearn)
+4. Visualize PCA and heatmaps (matplotlib/seaborn)
+5. Create a volcano plot (log2 fold change vs -log10 p-value)
+6. Save plots to figures/
+
+Required packages:
+pandas, numpy, matplotlib, seaborn, sklearn
+"""
+
+# Example code snippet for PCA
+import pandas as pd
+from sklearn.decomposition import PCA
+import matplotlib.pyplot as plt
+
+expr_df = pd.read_csv("data/gene_expression_matrix.csv", index_col=0)
+pca = PCA(n_components=2)
+pca_result = pca.fit_transform(expr_df.T)
+
+plt.scatter(pca_result[:, 0], pca_result[:, 1])
+plt.title("PCA of Gene Expression")
+plt.xlabel("PC1")
+plt.ylabel("PC2")
+plt.savefig("figures/pca_2d.png")
