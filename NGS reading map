@@ -1,0 +1,14 @@
+/ngs-variant-calling-pipeline
+├── README.md
+├── data/
+│   └── sample.fastq.gz
+├── scripts/
+│   ├── align.sh
+│   ├── call_variants.sh
+├── results/
+│   ├── sample.bam
+│   ├── sample.vcf
+├── analysis/
+│   └── variant_exploration.Rmd
+└── figures/
+    └── snp_distribution.png
